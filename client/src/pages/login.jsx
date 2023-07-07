@@ -1,7 +1,8 @@
 import Link from "next/link"
 import axios from "axios"
 import { useRouter } from "next/router"
-import { useState } from "react"
+import { useContext, useState } from "react"
+import { AuthContext } from "@/context/authContext";
 
 export default function Login() {
   const router = useRouter();
@@ -11,7 +12,11 @@ export default function Login() {
     password:"",
   })
 
-  const [err, setErr] = useState(null)
+  const [err, setErr] = useState(null);
+
+  const  { currentUser, login } = useContext(AuthContext);
+
+  console.log(currentUser);
 
   const handleChange = (e) => {
     setInput((prev) => ({...prev, [e.target.name]: e.target.value}))
@@ -21,7 +26,8 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:8800/api/auth/login', input, { withCredentials: true });
+      await login(input);
+      // await axios.post('http://localhost:8800/api/auth/login', input, { withCredentials: true });
       router.push('/');
     } catch (err) {
       setErr(err.response.data)

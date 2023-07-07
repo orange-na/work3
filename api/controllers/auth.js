@@ -102,7 +102,12 @@ db.query(q, [req.body.username], (err, results) => {
 }
 
 const logout = (req, res) => {
-
+    res.clearCookie("access_token", {
+        sameSite: 'none',
+        secure: true,
+        path: '/',
+        domain: 'localhost'
+    }).status(200).json('User has been logged out!!')
 }
 
 module.exports = { register, login, logout };
