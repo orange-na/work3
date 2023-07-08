@@ -1,9 +1,36 @@
 import { Footer } from "@/components/footer";
 import { Menu } from "@/components/menu";
 import { Navbar } from "@/components/navbar";
+import { AuthContext } from "@/context/authContext";
+import axios from "axios";
+import moment from "moment";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { useContext, useEffect, useState } from "react";
 
 export default function Single() {
+
+
+  const [post, setPost] = useState({});
+
+  const { currentUser } = useContext(AuthContext);
+
+  const router = useRouter();
+  const postId = router.asPath.split("/")[2];
+
+  console.log(postId)
+
+  useEffect(() => {
+      const fetchData = async () => {
+          try {
+              const res = await axios.get(`http://localhost:8800/api/posts/${ postId }`);
+              setPost(res.data);
+          } catch (err) {
+              console.log(err);
+          }
+      }
+      fetchData();
+  }, [postId])
   return (
     <>
     <Navbar />
@@ -18,11 +45,12 @@ export default function Single() {
             <img className="w-full h-full rounded-full" src="../img/isu.jpg" alt="" />
           </div>
           <div className="">
-            <span className="font-bold">Yuto</span>
-            <p>Posted 2 days ago</p>
+            <span className="font-bold">{ post.username }</span>
+            <p>Posted {moment(post.date).fromNow()}</p>
           </div>
-            <Link href='/write?edit=2'><button className="w-14 h-14 rounded-full bg-blue-300 font-bold cursor-pointer">edit</button></Link>
-            <button className="w-14 h-14 rounded-full bg-red-300 font-bold cursor-pointer">delete</button>
+              <Link href='/write?edit=2'><button className="w-14 h-14 rounded-full bg-blue-300 font-bold cursor-pointer">edit</button></Link>
+              <button className="w-14 h-14 rounded-full bg-red-300 font-bold cursor-pointer">delete</button>
+
         </div>
         <h1 className="font-bold text-4xl mb-5">Lorem ipsum dolor, sit amet consectetur adipisicing elit.  quis dolores aut fuga quam?</h1>
         <p className="leading-8">Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus vitae voluptatibus magni illum architecto. Tenetur quidem excepturi quam reiciendis labore quisquam natus, facilis facere! Optio doloremque perferendis soluta adipisci vel beatae quaerat, dolor velit sunt labore neque quos? Dolores libero eligendi nobis maiores doloremque officiis doloribus, 
