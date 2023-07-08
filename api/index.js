@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(cors(corsOptions));
 app.use(express.urlencoded({extended: false}));
 app.use(cookieParser());
-app.use('/api/post', postsRouter);
+app.use('/api/posts', postsRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/user', usersRouter);
 
