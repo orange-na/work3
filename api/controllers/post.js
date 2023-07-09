@@ -1,3 +1,4 @@
+const jwt = require("jsonwebtoken");
 const { db } = require('../db');
 
 
@@ -12,7 +13,12 @@ const getPosts = (req, res) => {
 }
 
 const getPost = (req, res) => {
-    res.json('from controllers post!')
+    const q = "SELECT u.username, p.title, p.desc, p.img, u.img AS userImg, p.cat, p.date FROM users u JOIN posts p ON u.id = p.uid WHERE p.id = ?"
+    db.query(q, [req.params.id], (err, results) => {
+        if(err) return res.json(err);
+
+        return res.status(200).json(results)[0];
+    })
 }
 
 const addPost = (req, res) => {
@@ -20,7 +26,15 @@ const addPost = (req, res) => {
 }
 
 const deletePost = (req, res) => {
-    res.json('from controllers post!')
+        const q = "DELETE FROM posts WHERE `id` = ?";
+        const postId = req.params.id;
+
+        db.query(q, [postId], (err, results) => {
+            if(err) return res.status(403).json(err);
+
+            return res.json('Post has been deleted successfully!!')
+        })
+    
 }
 
 const updatePost = (req, res) => {

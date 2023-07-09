@@ -2,6 +2,11 @@ const { db } = require('../db');
 const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 
+const config = {
+    headers: { 'Content-Type': 'application/json' },
+    withCredentials: true
+    }
+
 
 const register = (req, res) => {
     // Check existng users
