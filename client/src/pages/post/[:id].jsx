@@ -69,7 +69,7 @@ export default function Single() {
         <h1 className="font-bold text-4xl mb-5">{ post?.title }</h1>
         { post?.desc }
       </div>
-      <Menu />
+      <Menu cat={ post?.cat }/>
 
     </div>
 

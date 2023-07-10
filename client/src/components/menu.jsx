@@ -1,31 +1,51 @@
+import axios from "axios";
 import Link from "next/link"
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 
-export function Menu() {
-    const posts = [
-        {
-            id:1,
-            title:"fdfdfdfdf",
-            desc:"fddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdf",
-            img:"../img/tree.jpg",
-            
-        },
-        {
-            id:2,
-            title:"fdfdfdfdf",
-            desc:"fddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdf",
-            img:"../img/tree.jpg",
-            
-        },
-        {
-            id:3,
-            title:"fdfdfdfdf",
-            desc:"fddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdf",
-            img:"../img/tree.jpg",
-            
-        },
+export function Menu({ cat }) {
 
-    ]
+    const [posts, setPosts] = useState([]);
+
+    const router = useRouter();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const res = await axios.get(`http://localhost:8800/api/posts/?cat=${ cat }`);
+                setPosts(res.data);
+            } catch (err) {
+                console.log(err);
+            }
+        }
+        fetchData();
+    }, [cat])
+
+    // const posts = [
+    //     {
+    //         id:1,
+    //         title:"fdfdfdfdf",
+    //         desc:"fddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdf",
+    //         img:"../img/tree.jpg",
+            
+    //     },
+    //     {
+    //         id:2,
+    //         title:"fdfdfdfdf",
+    //         desc:"fddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdf",
+    //         img:"../img/tree.jpg",
+            
+    //     },
+    //     {
+    //         id:3,
+    //         title:"fdfdfdfdf",
+    //         desc:"fddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdfddfdfdfdf",
+    //         img:"../img/tree.jpg",
+            
+    //     },
+
+    // ]
 
     return (
         <div className="w-4/12 pl-12">
