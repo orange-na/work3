@@ -1,19 +1,27 @@
 import { Footer } from "@/components/footer";
 import { Navbar } from "@/components/navbar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import dynamic from 'next/dynamic';
 import 'react-quill/dist/quill.snow.css';
 import axios from "axios";
+import { useRouter } from "next/router";
+import moment from "moment";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 
 
 export default function Write() {
-  const [value, setValue] = useState('');
-  const [title, setTitle] = useState('');
+  const router = useRouter().query;
+  const [value, setValue] = useState(router?.desc || '');
+  const [title, setTitle] = useState(router?.title || '');
   const [file, setFile] = useState(null);
-  const [cat, setCat] = useState('');
+  const [cat, setCat] = useState(router?.cat || '');
+  const [currentUser, setCurrentUser] = useState({});
+
+  
+
+  console.log(router);
 
   const upload = async () => {
     try {
@@ -26,6 +34,14 @@ export default function Write() {
     }
   }
 
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem('user') || null);
+    setCurrentUser(storedUser);
+  },[])
+
+  console.log(currentUser.id);
+
+
   console.log(value);
   console.log(title);
   console.log(file);
@@ -34,9 +50,22 @@ export default function Write() {
 
   const handlePublish = async (e) => {
     e.preventDefault();
-    const imgUrl = upload();
+    const imgUrl = await upload();
     try {
-      
+      router.id ? await axios.put(`http://localhost:8800/api/posts/${ router.id }`, {
+        title,
+        desc: value,
+        cat,
+        img: file ? imgUrl : '',
+      })
+      : await axios.post('http://localhost:8800/api/posts/', {
+        title,
+        desc: value,
+        cat,
+        img: file ? imgUrl : '',
+        date: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
+        uid: currentUser.id,
+      })
     } catch (err) {
       console.log(err);
     }
@@ -50,7 +79,7 @@ export default function Write() {
 
       <div className="flex w-10/12 mx-auto py-5 mb-20">
         <div className="w-2/3">
-          <input type="text" placeholder="title" className="border-2 p-3 w-full mb-4" onChange={ (e) => setTitle(e.target.value) }/>
+          <input type="text" value={ title } placeholder="title" className="border-2 p-3 w-full mb-4" onChange={ (e) => setTitle(e.target.value) }/>
           <div className="h-72">
             <ReactQuill className="h-full" value={value} onChange={setValue}/>
           </div>
@@ -74,27 +103,27 @@ export default function Write() {
           <div className="p-5 border-2 flex flex-col gap-1 mt-5">
             <h1 className="text-3xl font-bold mb-3">Category</h1>
             <div className="">
-            <input className="mr-2" type="radio" name="cat" value='art' id="art" onChange={ (e) => setCat(e.target.value) } />
+            <input className="mr-2" type="radio" checked={ cat === 'art' } name="cat" value='art' id="art" onChange={ (e) => setCat(e.target.value) } />
             <label htmlFor="art">art</label>
             </div>
             <div className="">
-            <input className="mr-2" type="radio" name="cat" value='sience' id="sience" onChange={ (e) => setCat(e.target.value) } />
+            <input className="mr-2" type="radio" checked={ cat === 'sience' } name="cat" value='sience' id="sience" onChange={ (e) => setCat(e.target.value) } />
             <label htmlFor="sience">sience</label>
             </div>
             <div className="">
-            <input className="mr-2" type="radio" name="cat" value='technology' id="technology" onChange={ (e) => setCat(e.target.value) } />
+            <input className="mr-2" type="radio" checked={ cat === 'technology' } name="cat" value='technology' id="technology" onChange={ (e) => setCat(e.target.value) } />
             <label htmlFor="technology">technology</label>
             </div>
             <div className="">
-            <input className="mr-2" type="radio" name="cat" value='cinema' id="cinema" onChange={ (e) => setCat(e.target.value) } />
+            <input className="mr-2" type="radio" checked={ cat === 'cinema' } name="cat" value='cinema' id="cinema" onChange={ (e) => setCat(e.target.value) } />
             <label htmlFor="cinema">cinema</label>
             </div>
             <div className="">
-            <input className="mr-2" type="radio" name="cat" value='design' id="design" onChange={ (e) => setCat(e.target.value) } />
+            <input className="mr-2" type="radio" checked={ cat === 'design' } name="cat" value='design' id="design" onChange={ (e) => setCat(e.target.value) } />
             <label htmlFor="design">design</label>
             </div>
             <div className="">
-            <input className="mr-2" type="radio" name="cat" value='food' id="food" onChange={ (e) => setCat(e.target.value) } />
+            <input className="mr-2" type="radio" checked={ cat === 'food' } name="cat" value='food' id="food" onChange={ (e) => setCat(e.target.value) } />
             <label htmlFor="food">food</label>
           </div>
           </div>

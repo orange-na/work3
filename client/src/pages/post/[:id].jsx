@@ -49,7 +49,7 @@ export default function Single() {
     <div className="flex w-10/12 mx-auto py-5 mb-20">
       <div className="w-8/12">
         <div className="h-48">
-          <img className="w-full h-full object-cover" src={ post?.img } alt="" />
+          <img className="w-full h-full object-cover" src={ post.img ? `../upload/${post?.img}`: null } alt="" />
         </div>
         <div className="flex gap-2 my-6">
 {  post?.userImg && (<div className="w-14 h-14 mr-3">
@@ -62,7 +62,7 @@ export default function Single() {
 
 { post?.username &&
 (<>
-<Link href='/write?edit=2'><button className="w-14 h-14 rounded-full bg-blue-300 font-bold cursor-pointer">edit</button></Link>
+<Link href={{ pathname: '/write', query: post }} as='/write?edit=2'><button className="w-14 h-14 rounded-full bg-blue-300 font-bold cursor-pointer" >edit</button></Link>
 <button className="w-14 h-14 rounded-full bg-red-300 font-bold cursor-pointer" onClick={ handleDelete }>delete</button>
 </>)}
         </div>
