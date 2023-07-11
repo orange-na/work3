@@ -23,6 +23,11 @@ export function Main() {
         fetchData();
     }, [cat])
 
+    const getText = (html) => {
+        const doc = new DOMParser().parseFromString(html, 'text/html')
+        return doc.body.textContent;
+    }
+
     // const posts = [
     //     {
     //         id:1,
@@ -60,7 +65,7 @@ export function Main() {
                                 <Link href={`/post/${post.id}`}>
                                     <h2 className="text-3xl font-bold">{post.title}</h2>
                                 </Link>
-                                <p className="my-3">{post.desc}</p>
+                                <p className="my-3">{getText(post.desc)}</p>
                                 <button className="py-2 px-4 bg-green-300 rounded-lg">Read More</button>
                             </div>
                         </div>

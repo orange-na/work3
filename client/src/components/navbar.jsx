@@ -11,7 +11,7 @@ export function Navbar() {
     return (
         <header>
             <div className="flex justify-between w-10/12 mx-auto py-5 items-center">
-                <div className="text-3xl">Logo</div>
+                 <Link href='/'><div className="text-3xl">Logo</div></Link>
                 <nav>
                     <ul className="flex gap-5 items-center justify-center">
                         <li><Link className="font-light" href='/?cat=art'>ART</Link></li>
