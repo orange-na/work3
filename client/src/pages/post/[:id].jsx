@@ -42,11 +42,16 @@ export default function Single() {
   }
 }
 
+const getText = (html) => {
+  const doc = new DOMParser().parseFromString(html, 'text/html')
+  return doc.body.textContent;
+}
+
   return (
     <>
     <Navbar />
 
-    <div className="flex w-10/12 mx-auto py-5 mb-20">
+    <div className="flex w-10/12 mx-auto py-5 min-h-screen pt-32">
       <div className="w-8/12">
         <div className="h-48">
           <img className="w-full h-full object-cover" src={ post.img ? `../upload/${post?.img}`: null } alt="" />
@@ -67,7 +72,7 @@ export default function Single() {
 </>)}
         </div>
         <h1 className="font-bold text-4xl mb-5">{ post?.title }</h1>
-        { post?.desc }
+        { getText(post?.desc) }
       </div>
       <Menu cat={ post?.cat }/>
 

@@ -53,22 +53,24 @@ export function Main() {
 
     // ]
     return (
-        <main>
+        <main className="pt-36 pb-10 min-h-screen">
                 {posts.map((post) => {
                     return (
-                        <div key={post.id} className="flex w-10/12 mx-auto py-5 mb-20">
-                            <div className="mr-20 w-1/3 relative">
-                                <img src={post.img ? `../upload/${post?.img}`: null} alt="" />
-                                <div className="bg-green-300 absolute w-full h-full top-6 left-6 -z-30"></div>
+                            <div key={post.id} className="flex w-10/12 mx-auto p-8 mb-10 border-2 shadow-lg bg-slate-50 -z-30 hover:opacity-80 duration-200 rounded-lg">
+                                <div className="mr-20 w-1/3 relative">
+                                    <img src={post.img ? `../upload/${post?.img}`: null} alt="" className="rounded-md"/>
+                                    {/* <div className="bg-green-200 absolute w-full h-full top-4 left-4 -z-10"></div> */}
+                                </div>
+                                <div className="w-2/3">
+                                    <Link href={`/post/${post.id}`}>
+                                        <h2 className="text-3xl font-bold">{post.title}</h2>
+                                    </Link>
+                                    <p className="my-3">{getText(post.desc)}</p>
+                                    <Link href={`/post/${post.id}`}>
+                                        <button className="py-2 px-4 bg-blue-400 rounded-lg hover:bg-blue-500  text-white">Read More</button>
+                                    </Link>
+                                </div>
                             </div>
-                            <div className="w-2/3">
-                                <Link href={`/post/${post.id}`}>
-                                    <h2 className="text-3xl font-bold">{post.title}</h2>
-                                </Link>
-                                <p className="my-3">{getText(post.desc)}</p>
-                                <button className="py-2 px-4 bg-green-300 rounded-lg">Read More</button>
-                            </div>
-                        </div>
                     )
                 })}
         </main>

@@ -12,16 +12,16 @@ const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
 
 export default function Write() {
-  const router = useRouter().query;
-  const [value, setValue] = useState(router?.desc || '');
-  const [title, setTitle] = useState(router?.title || '');
+  const router = useRouter();
+  const [value, setValue] = useState(router.query?.desc || '');
+  const [title, setTitle] = useState(router.query?.title || '');
   const [file, setFile] = useState(null);
-  const [cat, setCat] = useState(router?.cat || '');
+  const [cat, setCat] = useState(router.query?.cat || '');
   const [currentUser, setCurrentUser] = useState({});
 
   
 
-  console.log(router);
+  console.log(router.query);
 
   const upload = async () => {
     try {
@@ -39,7 +39,6 @@ export default function Write() {
     setCurrentUser(storedUser);
   },[])
 
-  console.log(currentUser.id);
 
 
   console.log(value);
@@ -52,7 +51,7 @@ export default function Write() {
     e.preventDefault();
     const imgUrl = await upload();
     try {
-      router.id ? await axios.put(`http://localhost:8800/api/posts/${ router.id }`, {
+      router.query.id ? await axios.put(`http://localhost:8800/api/posts/${ router.query.id }`, {
         title,
         desc: value,
         cat,
@@ -66,6 +65,7 @@ export default function Write() {
         date: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
         uid: currentUser.id,
       })
+      router.push('/');
     } catch (err) {
       console.log(err);
     }
@@ -77,7 +77,7 @@ export default function Write() {
       <>
       <Navbar />
 
-      <div className="flex w-10/12 mx-auto py-5 mb-20">
+      <div className="flex w-10/12 mx-auto py-5 mb-20 pt-28 min-h-screen">
         <div className="w-2/3">
           <input type="text" value={ title } placeholder="title" className="border-2 p-3 w-full mb-4" onChange={ (e) => setTitle(e.target.value) }/>
           <div className="h-72">
@@ -85,53 +85,52 @@ export default function Write() {
           </div>
         </div>
         <div className="ml-6">
-          <div className="p-5 border-2 flex flex-col gap-3">
-            <h1 className="text-3xl font-bold">Publish</h1>
-            <span>
-              Status: Draft
-            </span>
-            <span>
-              visibility: Draft
-            </span>
+          <div className="py-5 px-10 flex flex-col gap-2">
+            <h1 className="text-2xl font-bold text-center">Upload</h1>
+
             <input className="hidden" type="file" id="file" onChange={ (e) => setFile(e.target.files[0]) }/>
-            <label htmlFor="file" className="underline">Upload file</label>
-            <div className="">
-              <button className="bg-white border-2 border-green-500 text-green-500 px-4 py-2 rounded-lg mr-24">Save as a draft</button>
-              <button className="bg-green-500 border-2 text-white px-4 py-2 rounded-lg" onClick={ handlePublish }>Publish</button>
+            { file ? 
+            <label htmlFor="file" className="border-2 py-2 px-4 text-center rounded-lg duration-200 bg-green-300 cursor-pointer text-white">Uploded</label>
+            : <label htmlFor="file" className="border-2 py-2 px-4 text-center rounded-lg duration-200 hover:bg-gray-100 cursor-pointer">Select Picture</label>
+            }
+
+            <h1 className="text-2xl font-bold mb-1 text-center mt-3">Category</h1>
+            <div className="p-3 px-10 border-2 flex flex-col gap-1 rounded-md">
+              <div className="">
+                <input className="mr-2 cursor-pointer" type="radio" checked={ cat === 'art' } name="cat" value='art' id="art" onChange={ (e) => setCat(e.target.value) } />
+                <label className="cursor-pointer" htmlFor="art">art</label>
+              </div>
+              <div className="">
+                <input className="mr-2 cursor-pointer" type="radio" checked={ cat === 'sience' } name="cat" value='sience' id="sience" onChange={ (e) => setCat(e.target.value) } />
+                <label className="cursor-pointer" htmlFor="sience">sience</label>
+              </div>
+              <div className="">
+                <input className="mr-2 cursor-pointer" type="radio" checked={ cat === 'technology' } name="cat" value='technology' id="technology" onChange={ (e) => setCat(e.target.value) } />
+                <label className="cursor-pointer" htmlFor="technology">technology</label>
+              </div>
+              <div className="">
+                <input className="mr-2 cursor-pointer" type="radio" checked={ cat === 'cinema' } name="cat" value='cinema' id="cinema" onChange={ (e) => setCat(e.target.value) } />
+                <label className="cursor-pointer" htmlFor="cinema">cinema</label>
+              </div>
+              <div className="">
+                <input className="mr-2 cursor-pointer" type="radio" checked={ cat === 'design' } name="cat" value='design' id="design" onChange={ (e) => setCat(e.target.value) } />
+                <label className="cursor-pointer" htmlFor="design">design</label>
+              </div>
+              <div className="">
+                <input className="mr-2 cursor-pointer" type="radio" checked={ cat === 'food' } name="cat" value='food' id="food" onChange={ (e) => setCat(e.target.value) } />
+                <label className="cursor-pointer" htmlFor="food">food</label>
             </div>
           </div>
-          <div className="p-5 border-2 flex flex-col gap-1 mt-5">
-            <h1 className="text-3xl font-bold mb-3">Category</h1>
-            <div className="">
-            <input className="mr-2" type="radio" checked={ cat === 'art' } name="cat" value='art' id="art" onChange={ (e) => setCat(e.target.value) } />
-            <label htmlFor="art">art</label>
+          <div className="mt-3">
+              <button className="bg-blue-400 border-2 text-white px-4 py-3 rounded-lg cursor-pointer hover:bg-blue-500 w-full" onClick={ handlePublish }>Publish</button>
             </div>
-            <div className="">
-            <input className="mr-2" type="radio" checked={ cat === 'sience' } name="cat" value='sience' id="sience" onChange={ (e) => setCat(e.target.value) } />
-            <label htmlFor="sience">sience</label>
-            </div>
-            <div className="">
-            <input className="mr-2" type="radio" checked={ cat === 'technology' } name="cat" value='technology' id="technology" onChange={ (e) => setCat(e.target.value) } />
-            <label htmlFor="technology">technology</label>
-            </div>
-            <div className="">
-            <input className="mr-2" type="radio" checked={ cat === 'cinema' } name="cat" value='cinema' id="cinema" onChange={ (e) => setCat(e.target.value) } />
-            <label htmlFor="cinema">cinema</label>
-            </div>
-            <div className="">
-            <input className="mr-2" type="radio" checked={ cat === 'design' } name="cat" value='design' id="design" onChange={ (e) => setCat(e.target.value) } />
-            <label htmlFor="design">design</label>
-            </div>
-            <div className="">
-            <input className="mr-2" type="radio" checked={ cat === 'food' } name="cat" value='food' id="food" onChange={ (e) => setCat(e.target.value) } />
-            <label htmlFor="food">food</label>
           </div>
-          </div>
+
         </div>
       </div>
 
       <Footer />
       </>
-    )
+    ) 
   }
   
