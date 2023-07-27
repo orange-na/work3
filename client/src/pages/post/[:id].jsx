@@ -67,8 +67,8 @@ const getText = (html) => {
 
 { post?.username &&
 (<>
-<Link href={{ pathname: '/write', query: post }} as='/write?edit=2'><button className="w-14 h-14 rounded-full bg-blue-300 font-bold cursor-pointer" >edit</button></Link>
-<button className="w-14 h-14 rounded-full bg-red-300 font-bold cursor-pointer" onClick={ handleDelete }>delete</button>
+<Link href={{ pathname: '/write', query: post }} as='/write?edit=2'><button className="w-14 h-14 rounded-full bg-blue-300 text-white cursor-pointer" >edit</button></Link>
+<button className="w-14 h-14 rounded-full bg-red-300 text-white cursor-pointer" onClick={ handleDelete }>delete</button>
 </>)}
         </div>
         <h1 className="font-bold text-4xl mb-5">{ post?.title }</h1>
