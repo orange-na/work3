@@ -48,7 +48,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/user', usersRouter);
 
 
-app.listen(8800, () => {
+app.listen(process.env.PORT || 8800, () => {
     console.log('Connected to API!!')
 });
 
