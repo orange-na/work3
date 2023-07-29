@@ -24,9 +24,14 @@ export function Main() {
     }, [cat])
 
     const getText = (html) => {
-        const doc = new DOMParser().parseFromString(html, 'text/html')
-        return doc.body.textContent;
-    }
+        if (typeof window !== 'undefined') {
+          const doc = new DOMParser().parseFromString(html, 'text/html');
+          return doc.body.textContent;
+        } else {
+          // サーバーサイドレンダリングの場合は別の処理を行う
+          return 'Server-side rendering, unable to parse HTML';
+        }
+      };
 
     // const posts = [
     //     {
