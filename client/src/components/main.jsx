@@ -14,7 +14,7 @@ export function Main() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await axios.get(`http://localhost:8800/api/posts${ cat }`);
+                const res = await axios.get(`https://social-app-express.onrender.com/api/posts${ cat }`);
                 setPosts(res.data);
             } catch (err) {
                 console.log(err);

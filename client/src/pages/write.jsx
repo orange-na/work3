@@ -27,7 +27,7 @@ export default function Write() {
     try {
       const formData = new FormData();
       formData.append('file', file);
-      const res = await axios.post('http://localhost:8800/api/upload', formData)
+      const res = await axios.post('https://social-app-express.onrender.com/api/upload', formData)
       return res.data;
     } catch (err) {
       console.log(err);
@@ -51,13 +51,13 @@ export default function Write() {
     e.preventDefault();
     const imgUrl = await upload();
     try {
-      router.query.id ? await axios.put(`http://localhost:8800/api/posts/${ router.query.id }`, {
+      router.query.id ? await axios.put(`https://social-app-express.onrender.com/api/posts/${ router.query.id }`, {
         title,
         desc: value,
         cat,
         img: file ? imgUrl : '',
       })
-      : await axios.post('http://localhost:8800/api/posts/', {
+      : await axios.post('https://social-app-express.onrender.com/api/posts/', {
         title,
         desc: value,
         cat,

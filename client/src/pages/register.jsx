@@ -23,7 +23,7 @@ export default function Register() {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:8800/api/auth/register', input);
+      await axios.post('https://social-app-express.onrender.com/api/auth/register', input);
       router.push('/login');
     } catch (err) {
       setErr(err.response.data)

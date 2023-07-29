@@ -6,7 +6,7 @@ const cors = require('cors');
 const usersRouter = require('./routes/users');
 const multer = require('multer');
 const corsOptions = {
-    origin: 'http://localhost:3000',
+    origin: 'socialpost.vercel.app',
     credentials: true,
 };
 

@@ -13,12 +13,12 @@ export const AuthContextProvider = ({children}) => {
       }, []);
       
     const login = async (input) => {
-        const res = await axios.post('http://localhost:8800/api/auth/login', input, { withCredentials: true });
+        const res = await axios.post('https://social-app-express.onrender.com/api/auth/login', input, { withCredentials: true });
         setCurrentUser(res.data)
     }
 
     const logout = async () => {
-        await axios.post('http://localhost:8800/api/auth/logout', {} ,{ withCredentials: true });
+        await axios.post('https://social-app-express.onrender.com/api/auth/logout', {} ,{ withCredentials: true });
         setCurrentUser(null)
     };
 

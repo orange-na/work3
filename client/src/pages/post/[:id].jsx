@@ -23,7 +23,7 @@ export default function Single() {
   useEffect(() => {
       const fetchData = async () => {
           try {
-              const res = await axios.get(`http://localhost:8800/api/posts/${ postId }`);
+              const res = await axios.get(`https://social-app-express.onrender.com/api/posts/${ postId }`);
               setPost(res.data[0]);
               console.log(res.data[0])
           } catch (err) {
@@ -35,7 +35,7 @@ export default function Single() {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`http://localhost:8800/api/posts/${ postId }`);
+      await axios.delete(`https://social-app-express.onrender.com/api/posts/${ postId }`);
       router.push('/');
   } catch (err) {
       console.log(err);
